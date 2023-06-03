@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ApiResponse {
 
     private HttpStatus status;
+    private int statusCode;
     private Object data;
     private String message;
     
