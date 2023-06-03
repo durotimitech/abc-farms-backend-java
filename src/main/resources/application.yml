@@ -1,0 +1,13 @@
+server:
+  port: 5000
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: b6e1855329f0db
+    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_b7e8727d847fbf9
+    password: 803e4ac3
+    # mysql://b6e1855329f0db:803e4ac3@us-cdbr-east-06.cleardb.net/heroku_b7e8727d847fbf9?reconnect=true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
