@@ -1,0 +1,20 @@
+-> Initial spring boot setup
+https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.1.0&packaging=jar&jvmVersion=17&groupId=com.timmy&artifactId=spring-boot-tutorial&name=spring-boot-tutorial&description=Demo%20project%20for%20Spring%20Boot&packageName=com.timmy.spring-boot-tutorial&dependencies=web,h2,devtools,data-jpa,lombok,mysql,security
+
+-> To run a spring boot application from the terminal
+mvn spring-boot:run
+
+Procedure to create endpoints
+
+- Create the entity class. This defines the database schema
+- Define the repository. This would provide the necessary function to interact with the database
+- Create the controller class which holds the actual api endpoint. It connects with the service implemtation class
+- Create the interface class as a service. This would define the interface for the datatype arguments and return types
+- Create the implementation service class for the interface. This would
+implements the interface and connect with the class repository to trigger database functions
+
+- Extract the user id on each endpoint
+- Add custom validations for each endpoint
+- Fix the response code header to show the correct response code
+
+git add . && git commit -m "configured custom error objects" && git push

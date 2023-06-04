@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final String JWT_SECRET_KEY = "2F423F4528482B4D6251655468566D597133743677397A24432646294A404E63";
+    @Value("${env.JWT_SECRET_KEY}")
+    private String JWT_SECRET_KEY;
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
