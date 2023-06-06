@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final String[] AUTH_WHITELIST = {
+        "/error",
         "/api/ping",
         // "/api/users/**",
         "/api/users/register",
