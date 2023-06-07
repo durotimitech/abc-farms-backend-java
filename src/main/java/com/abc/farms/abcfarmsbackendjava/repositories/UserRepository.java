@@ -11,4 +11,7 @@ import com.abc.farms.abcfarmsbackendjava.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     
     Optional<User> findByEmail(String email);
+
+    // TODO: Test
+    Optional<User> findByEmailVerificationCode(String emailVerificationCode);
 }

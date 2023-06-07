@@ -26,6 +26,7 @@ class UserRepositoryTest {
                 .firstName("John")
                 .lastName("Doe")
                 .password("12345678")
+                .phone("09084880043")
                 .build();
 
         userRepository.save(user);

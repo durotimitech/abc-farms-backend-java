@@ -15,6 +15,7 @@ import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.BadRequest
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.ConflictError;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.LoginRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.RegisterRequest;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.RegisterResponse;
 import com.abc.farms.abcfarmsbackendjava.services.implementations.UserServiceImpl;
 
 import java.util.Optional;
@@ -63,9 +64,9 @@ class UserServiceImplTest {
         when(passwordEncoder.encode(registerRequest.getPassword())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        boolean result = userServiceImpl.register(registerRequest);
+        RegisterResponse result = userServiceImpl.register(registerRequest);
 
-        assertTrue(result);
+        assertTrue(result.getVerificationCode() instanceof String);
 
     }
 

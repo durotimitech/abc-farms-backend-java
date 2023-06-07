@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
+public class ResendVerificationEmailResponse {
 
-    private String token;
-    private String firstName;
-    private boolean isEmailVerified;
+    private String verificationCode;
 
 }

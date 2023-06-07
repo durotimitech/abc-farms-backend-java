@@ -11,21 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class ResendVerificationRequest {
+    
     @NotBlank(message = "Email cannot be null")
     @Email(message = "Email should be valid")
     private String email;
-
-    @NotBlank(message = "First name cannot be null")
-    private String firstName;
-
-    @NotBlank(message = "Last name cannot be null")
-    private String lastName;
-
-    @NotBlank(message = "Password cannot be null")
-    private String password;
-
-    @NotBlank(message = "Phone cannot be null")
-    private String phone;
 
 }

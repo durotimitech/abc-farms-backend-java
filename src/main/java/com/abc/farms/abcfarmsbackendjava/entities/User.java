@@ -48,9 +48,16 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Password is mandatory")
     private String password;
-
+   
+    @NotBlank(message = "Phone is mandatory")
+    private String phone;
+    
     @Enumerated(EnumType.STRING)
     private Roles role;
+    
+    private String emailVerificationCode;
+    private boolean isEmailVerified;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

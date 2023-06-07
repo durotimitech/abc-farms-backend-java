@@ -4,12 +4,23 @@ import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.BadRequest
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.ConflictError;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.LoginRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.RegisterRequest;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ResendVerificationRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.LoginResponse;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.RegisterResponse;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.ResendVerificationEmailResponse;
+
+import jakarta.validation.Valid;
 
 public interface UserService {
 
-    public boolean register(RegisterRequest request) throws ConflictError;
+    public RegisterResponse register(@Valid RegisterRequest request) throws ConflictError;
 
-    public LoginResponse login(LoginRequest request) throws BadRequestError;
+    public LoginResponse login(@Valid LoginRequest request) throws BadRequestError;
+
+    // TODO: Test
+    public boolean verifyEmail(String emailVerificationCode) throws BadRequestError;
+
+    // TODO: Test
+    public ResendVerificationEmailResponse resendVerificationEmail(@Valid ResendVerificationRequest request) throws BadRequestError;
     
 }

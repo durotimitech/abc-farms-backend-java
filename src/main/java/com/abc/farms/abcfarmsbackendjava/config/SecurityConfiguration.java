@@ -21,6 +21,8 @@ public class SecurityConfiguration {
         // "/api/users/**",
         "/api/users/register",
         "/api/users/login",
+        "/api/users/verify-email",
+        "/api/users/resend-verification-email",
     };
 
     private final JwtAuthenticationFilter jwtRequestFilter;

@@ -3,9 +3,11 @@ POST http://localhost:5000/api/users/register
 Content-Type: application/json
 
 {
+    "email": "timi1@gmail.com",
+    "password":"12345678",
     "firstName":"John",
     "lastName":"Doe",
-    "email": "timi@gmail.com"
+    "phone":"08012345678"
 }
 
 
@@ -16,4 +18,17 @@ Content-Type: application/json
 {
     "email": "timi@gmail.com",
     "password":"12345678"
+}
+
+### VERIFY EMAIL
+GET http://localhost:5000/api/users/verify-email?emailVerificationCode=timirt1@gmail.com940940
+Content-Type: application/json
+
+
+### RESEND VERIFY EMAIL
+POST http://localhost:5000/api/users/resend-verification-email
+Content-Type: application/json
+
+{
+    "email": "timirt11@gmail.com"
 }
