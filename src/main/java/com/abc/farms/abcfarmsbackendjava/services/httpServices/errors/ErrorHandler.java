@@ -1,10 +1,11 @@
 package com.abc.farms.abcfarmsbackendjava.services.httpServices.errors;
 
-import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.ApiResponse;
 
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = BadRequestError.class)

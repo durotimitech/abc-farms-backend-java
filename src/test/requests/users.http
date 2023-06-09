@@ -16,7 +16,17 @@ POST http://localhost:5000/api/users/login
 Content-Type: application/json
 
 {
-    "email": "timi@gmail.com",
+    "email": "buyer@buyer.com",
+    "password":"12345678"
+}
+
+
+### LOGIN ADMIN
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+    "email": "admin@admin.com",
     "password":"12345678"
 }
 

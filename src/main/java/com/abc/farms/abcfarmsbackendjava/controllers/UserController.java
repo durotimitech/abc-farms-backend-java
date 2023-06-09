@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,7 +66,6 @@ public class UserController {
 
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody @Valid LoginRequest request) throws BadRequestError {
         logger.info(">>> POST /api/users/login <<<");
@@ -93,19 +91,12 @@ public class UserController {
             throws BadRequestError {
         logger.info(">>> GET /api/users/verfy-email <<<");
 
-        // HashMap<String, Object> data = new HashMap<>();
-        // RedirectView redirectView = new RedirectView();
-
         try {
             userService.verifyEmail(emailVerificationCode);
 
-            // redirectView.setUrl("http://localhost:3000/auth/login");
-            // redirectView.setStatusCode(HttpStatus.OK);
-            
-            // ResponseEntity<ApiResponse> response = ResponseUtils.createApiResponse(HttpStatus.OK, data, "success");
             return ResponseEntity.status(HttpStatus.FOUND).location(URI
-            .create("http://localhost:3000/auth/login")).build();
-            
+                    .create("http://localhost:3000/auth/login")).build();
+
         } catch (BadRequestError e) {
             throw e;
         } catch (Exception e) {
@@ -123,7 +114,8 @@ public class UserController {
         HashMap<String, Object> data = new HashMap<>();
 
         try {
-            ResendVerificationEmailResponse resendVerificationEmailResponse = userService.resendVerificationEmail(request);
+            ResendVerificationEmailResponse resendVerificationEmailResponse = userService
+                    .resendVerificationEmail(request);
             data.put("verificationCode", resendVerificationEmailResponse.getVerificationCode());
 
             ResponseEntity<ApiResponse> response = ResponseUtils.createApiResponse(HttpStatus.OK, data, "success");
@@ -158,14 +150,15 @@ public class UserController {
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<ApiResponse> changePassword(@RequestBody @Valid ChangePasswordRequest request, HttpServletRequest httpRequest)
+    public ResponseEntity<ApiResponse> changePassword(@RequestBody @Valid ChangePasswordRequest request,
+            HttpServletRequest httpRequest)
             throws BadRequestError {
         logger.info(">>> PUT /api/users/change-password <<<");
 
         HashMap<String, Object> data = new HashMap<>();
 
         try {
-            
+
             userService.changePassword(request, httpRequest);
 
             ResponseEntity<ApiResponse> response = ResponseUtils.createApiResponse(HttpStatus.OK, data, "success");

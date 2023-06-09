@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     private final String[] AUTH_WHITELIST = {
@@ -34,10 +34,7 @@ public class SecurityConfiguration {
             "/api/users/reset-password",
     };
 
-    // private final String[] ADMIN_ROUTES = {""};
-
     private final JwtAuthenticationFilter jwtRequestFilter;
-    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,8 +44,6 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        // .requestMatchers(ADMIN_ROUTES)
-                        // .hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf()
@@ -66,46 +61,13 @@ public class SecurityConfiguration {
 
                         return configuration;
                     }
-                });
+                }).and()
+                .formLogin()
+                .and()
+                .httpBasic();
 
         return http.build();
-        // http
-        // .cors()
-        // .configurationSource(corsConfigurationSource())
-        // .and()
-        // .csrf()
-        // .disable()
-        // .authorizeRequests()
-        // .requestMatchers(AUTH_WHITELIST)
-        // // .requestMatchers(AUTH_WHITELIST)
-        // .permitAll()
-        // // .requestMatchers(ADMIN_ROUTES)
-        // // .hasRole("ADMIN")
-        // .anyRequest()
-        // .authenticated()
-        // .and()
-        // .sessionManagement()
-        // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        // .and()
-        // .authenticationProvider(authenticationProvider)
-        // .addFilterBefore(jwtRequestFilter,
-        // UsernamePasswordAuthenticationFilter.class);
 
-        // return http.build();
-
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        // configuration.setAllowedOrigins(Arrays.asList("https://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        // configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",
-        // "DELETE"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
 }

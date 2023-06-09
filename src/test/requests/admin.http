@@ -1,0 +1,5 @@
+### GET USERS
+GET http://localhost:5000/api/admin/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE2ODYzMjQxNDEsImV4cCI6MTY4NjMyNTU4MX0.GzjHoNdf06vrYrNSOc7f2Fnjc0x4QYO-yYKxRWxv_QI
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXllckBidXllci5jb20iLCJpYXQiOjE2ODYzMjQxMjQsImV4cCI6MTY4NjMyNTU2NH0.NKc99U1IXIOB1_IXct2yf8mtfL868SeFvDP9nvhEQrk

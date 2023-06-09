@@ -185,9 +185,14 @@ public class UserServiceImpl implements UserService {
         String email = (String) httpRequest.getAttribute("email");
         Optional<User> user = userRepository.findByEmail(email);
 
-        boolean passwordMatches = passwordEncoder.matches(request.getNewPassword(), user.get().getPassword());
+        boolean oldPasswordMatches = passwordEncoder.matches(request.getOldPassword(), user.get().getPassword());
+        boolean newPasswordMatches = passwordEncoder.matches(request.getNewPassword(), user.get().getPassword());
 
-        if(passwordMatches){
+        if(!oldPasswordMatches){
+            throw new BadRequestError("Old password is not correct");
+        }
+       
+        if(newPasswordMatches){
             throw new BadRequestError("New password cannot be the same as old password");
         }
 
