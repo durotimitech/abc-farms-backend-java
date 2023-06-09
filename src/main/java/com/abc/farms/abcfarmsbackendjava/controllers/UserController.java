@@ -8,26 +8,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.ApiResponse;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.ResponseUtils;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.BadRequestError;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.ConflictError;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ChangePasswordRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.LoginRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.RegisterRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ResendVerificationRequest;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ResetPasswordRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.LoginResponse;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.RegisterResponse;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.ResendVerificationEmailResponse;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.ResetPasswordResponse;
 import com.abc.farms.abcfarmsbackendjava.services.interfaces.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -62,6 +67,7 @@ public class UserController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody @Valid LoginRequest request) throws BadRequestError {
         logger.info(">>> POST /api/users/login <<<");
@@ -117,8 +123,50 @@ public class UserController {
         HashMap<String, Object> data = new HashMap<>();
 
         try {
-            ResendVerificationEmailResponse ResendVerificationEmailResponse = userService.resendVerificationEmail(request);
-            data.put("verificationCode", ResendVerificationEmailResponse.getVerificationCode());
+            ResendVerificationEmailResponse resendVerificationEmailResponse = userService.resendVerificationEmail(request);
+            data.put("verificationCode", resendVerificationEmailResponse.getVerificationCode());
+
+            ResponseEntity<ApiResponse> response = ResponseUtils.createApiResponse(HttpStatus.OK, data, "success");
+            return response;
+        } catch (BadRequestError e) {
+            throw e;
+        } catch (Exception e) {
+            throw new Error(e.getMessage(), e.getCause());
+        }
+    }
+
+    // TODO: Test
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse> resetPasswrd(@RequestBody @Valid ResetPasswordRequest request)
+            throws BadRequestError {
+        logger.info(">>> POST /api/users/reset-password <<<");
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        try {
+            ResetPasswordResponse resetPasswordResponse = userService.resetPassword(request);
+            data.put("newPassword", resetPasswordResponse.getNewPassword());
+
+            ResponseEntity<ApiResponse> response = ResponseUtils.createApiResponse(HttpStatus.OK, data, "success");
+            return response;
+        } catch (BadRequestError e) {
+            throw e;
+        } catch (Exception e) {
+            throw new Error(e.getMessage(), e.getCause());
+        }
+
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse> changePassword(@RequestBody @Valid ChangePasswordRequest request, HttpServletRequest httpRequest)
+            throws BadRequestError {
+        logger.info(">>> PUT /api/users/change-password <<<");
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        try {
+            
+            userService.changePassword(request, httpRequest);
 
             ResponseEntity<ApiResponse> response = ResponseUtils.createApiResponse(HttpStatus.OK, data, "success");
             return response;

@@ -26,34 +26,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-       @NonNull HttpServletRequest request, 
-        @NonNull HttpServletResponse response, 
-        @NonNull FilterChain filterChain)
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-                final String authHeader = request.getHeader("Authorization");
-                final String token;
-                final String email;
+        final String authHeader = request.getHeader("Authorization");
+        final String token;
+        final String email;
 
-                if(authHeader == null || !authHeader.startsWith("Bearer")) {
-                    filterChain.doFilter(request, response);
-                    return;
-                }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-                token = authHeader.substring(7);
-                email = jwtService.extractEmail(token);
+        token = authHeader.substring(7);
+        email = jwtService.extractEmail(token);
 
-                if(email != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
-                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
 
-                    if(jwtService.isTokenValid(token, userDetails)) {
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
-                        );
+            if (jwtService.isTokenValid(token, userDetails)) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
 
-                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                    }
-                }
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+                request.setAttribute("email", email );
             }
-    
+        }
+
+        filterChain.doFilter(request, response);
+
+    }
+
 }

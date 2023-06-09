@@ -32,3 +32,13 @@ Content-Type: application/json
 {
     "email": "timirt11@gmail.com"
 }
+
+### CHANGE PASSWORD
+PUT http://localhost:5000/api/users/change-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW1pQGdtYWlsLmNvbSIsImlhdCI6MTY4NjI5ODg2NCwiZXhwIjoxNjg2MzAwMzA0fQ.nLJtNh76E_F7NpTK1A2K0xO0Npxtlx9lLriftAiC0_U
+
+{
+    "oldPassword": "12345678",
+    "newPassword": "12345678"
+}

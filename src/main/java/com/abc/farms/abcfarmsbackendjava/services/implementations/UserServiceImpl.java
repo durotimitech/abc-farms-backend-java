@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.abc.farms.abcfarmsbackendjava.config.JwtService;
 import com.abc.farms.abcfarmsbackendjava.entities.User;
@@ -18,12 +17,15 @@ import com.abc.farms.abcfarmsbackendjava.interfaces.user.Roles;
 import com.abc.farms.abcfarmsbackendjava.repositories.UserRepository;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.BadRequestError;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.errors.ConflictError;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ChangePasswordRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.LoginRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.RegisterRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ResendVerificationRequest;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.requestMappings.users.ResetPasswordRequest;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.LoginResponse;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.RegisterResponse;
 import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.ResendVerificationEmailResponse;
+import com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users.ResetPasswordResponse;
 import com.abc.farms.abcfarmsbackendjava.services.interfaces.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -106,6 +108,7 @@ public class UserServiceImpl implements UserService {
                 .token(token)
                 .isEmailVerified(userDetails.isEmailVerified())
                 .firstName(userDetails.getFirstName())
+                .role(userDetails.getRole())
                 .build();
     }
 
@@ -152,6 +155,45 @@ public class UserServiceImpl implements UserService {
         return ResendVerificationEmailResponse.builder()
                 .verificationCode(verificationLink)
                 .build();
+    }
+
+    @Override
+    public ResetPasswordResponse resetPassword(@Valid ResetPasswordRequest request) throws BadRequestError {
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+
+        if (user.isEmpty()) {
+            throw new BadRequestError("Invalid email");
+        }
+
+        // Generate new 6 digit password
+        Random random = new Random();
+        int code = random.nextInt(900000) + 100000;
+        String newPassword = String.valueOf(code);
+
+        user.get().setPassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(user.get());
+
+        return ResetPasswordResponse.builder()
+                .newPassword(newPassword)
+                .build();
+
+    }
+
+    @Override
+    public void changePassword(@Valid ChangePasswordRequest request, HttpServletRequest httpRequest) throws BadRequestError {
+        String email = (String) httpRequest.getAttribute("email");
+        Optional<User> user = userRepository.findByEmail(email);
+
+        boolean passwordMatches = passwordEncoder.matches(request.getNewPassword(), user.get().getPassword());
+
+        if(passwordMatches){
+            throw new BadRequestError("New password cannot be the same as old password");
+        }
+
+        user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        userRepository.save(user.get());
     }
 
 }

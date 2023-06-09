@@ -1,7 +1,5 @@
 package com.abc.farms.abcfarmsbackendjava.services.httpServices.responseMappings.users;
 
-import com.abc.farms.abcfarmsbackendjava.interfaces.user.Roles;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,13 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
+public class ResetPasswordResponse {
 
-    private String token;
-    private String firstName;
-    private boolean isEmailVerified;
-    private Roles role;
+    private String newPassword;
 
 }
