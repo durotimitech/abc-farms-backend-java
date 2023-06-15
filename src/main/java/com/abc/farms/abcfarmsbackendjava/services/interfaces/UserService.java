@@ -21,16 +21,12 @@ public interface UserService {
 
     public LoginResponse login(@Valid LoginRequest request) throws BadRequestError;
 
-    // TODO: Test
     public boolean verifyEmail(String emailVerificationCode) throws BadRequestError;
 
-    // TODO: Test
     public ResendVerificationEmailResponse resendVerificationEmail(@Valid ResendVerificationRequest request) throws BadRequestError;
     
-    // TODO: Test
     public ResetPasswordResponse resetPassword(@Valid ResetPasswordRequest request) throws BadRequestError;
     
-    // TODO: Test
     public void changePassword(@Valid ChangePasswordRequest request, HttpServletRequest httpRequest) throws BadRequestError;
     
 }

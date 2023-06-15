@@ -1,0 +1,28 @@
+### ADD PRODUCT
+POST http://localhost:5000/api/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE2ODYzOTkwNTEsImV4cCI6MTY4NjQwMDQ5MX0.KPIU5qf2GcqDVtRWtvmn4F65iZWctj54NZqAzNf5JOM
+
+  {
+   "name": "Sony WH-1000XM4",
+    "description": "Premium wireless noise-canceling headphones with exceptional sound quality.",
+    "price": 349.0,
+    "imageUrl": "https://example.com/s21ultra.jpg"
+  },
+
+
+### GET PRODUCTS
+GET http://localhost:5000/api/products?pageNumber=1&pageSize=4
+Content-Type: application/json
+
+### EDIT PRODUCT
+PUT http://localhost:5000/api/products/100
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE2ODY4MTk0ODUsImV4cCI6MTY4NjgyMTg4NX0.6FCKsxXmLPNf6QqChhjmqUPXxAVUTIpPHVSNx-cWDvs
+
+  {
+   "name": "Sony WH-1000XM4",
+    "description": "Premium wireless noise-canceling headphones with exceptional sound quality.",
+    "price": 349.0,
+    "imageUrl": "https://example.com/s21ultra.jpg"
+  },

@@ -32,6 +32,8 @@ public class SecurityConfiguration {
             "/api/users/verify-email",
             "/api/users/resend-verification-email",
             "/api/users/reset-password",
+
+            "/api/products",
     };
 
     private final JwtAuthenticationFilter jwtRequestFilter;
